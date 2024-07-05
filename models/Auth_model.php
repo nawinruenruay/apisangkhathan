@@ -5,37 +5,6 @@ class Auth_Model extends Model{
             parent::__construct();
     }
     
-    function Login(){
-        $json = file_get_contents('php://input');
-        $dataArray = json_decode($json);
-        $username = $dataArray->username;
-        $password = $dataArray->password;
-
-        $sql = $this->db->prepare("
-        SELECT tb_users.*, cname , ctel, cemail FROM tb_users 
-        LEFT JOIN tb_customers on tb_users.username = tb_customers.username
-        WHERE tb_users.username = '$username'");
-        $sql->execute(array());
-        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        if(count($data) == 0 || !password_verify($password, $data[0]['password'])){
-            $arr = array(
-                'data'=>"",
-                'message'=>"error",
-                'status'=>200
-            );
-        }else if(count($data)!= '0'){
-            $token = GenarateToken($username);
-            $arr = array(
-                'data'=>$data,
-                'token'=>$token,
-                'message'=>"success",
-                'status'=>200
-            );
-        }
-        echo json_encode($arr, JSON_PRETTY_PRINT);
-    }
-
     function LoginUser(){
         $json = file_get_contents('php://input');
         $dataArray = json_decode($json);
@@ -43,21 +12,23 @@ class Auth_Model extends Model{
         $password = $dataArray->password;
 
         $sql = $this->db->prepare("
-        SELECT tb_users.*, cname , ctel, cemail FROM tb_users 
-        LEFT JOIN tb_users_detail on tb_users.username = tb_users_detail.username
-        WHERE tb_users.username = '$username' AND tb_users.status = '2'");
+        SELECT tb_users.*, name from tb_users 
+        LEFT JOIN tb_users_detail on tb_users.userid = tb_users_detail.userid
+        WHERE username = '$username' AND status = '2'
+        ");
         $sql->execute(array());
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-
+    
         if(count($data) == 0 || !password_verify($password, $data[0]['password'])){
             $arr = array(
                 'data'=>"",
                 'message'=>"error",
-                'status'=>200
+                'status'=>400
             );
             
         }else if(count($data)!= '0'){
-            $token = GenarateToken($username);
+            $userid = $data[0]['userid'];
+            $token = GenarateToken($userid);
             $arr = array(
                 'data'=>$data,
                 'token'=>$token,
@@ -92,8 +63,8 @@ class Auth_Model extends Model{
 
         // tb_users_detail
         $sql_insert_tb_users_detail = $this->db->prepare("
-        INSERT INTO tb_users_detail(userid,name,tel,email,sex,birthday) 
-        VALUES('$userid','$name','','','','')
+        INSERT INTO tb_users_detail(userid,name,tel,email,sex,birthday,img) 
+        VALUES('$userid','$name','','','','','')
         ");
         $sql_insert_tb_users_detail->execute(array());
 

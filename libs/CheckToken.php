@@ -24,12 +24,13 @@
     //     return $jwt;
     // }
 
-    function GenarateToken($username){
+    function GenarateToken($userId){
         $key = "Api";
         $token = array(
             "iat" => time(),
             "exp" => time()+(60*60*24),
-            "username" => $username,
+            "userId" => $userId,
+            "typeuser" => "user"
         );
 
         $jwt = Firebase\JWT\JWT::encode($token, $key);
