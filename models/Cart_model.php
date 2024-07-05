@@ -12,20 +12,14 @@ class Cart_model extends Model
     {
         $json = file_get_contents("php://input");
         $dataJson = json_decode($json);
-        $username = $dataJson->username;
-    
-        $sql1 = $this->db->prepare("
-        SELECT cid FROM tb_customers WHERE username = '$username'
-        ");
-        $sql1->execute(array());
-        $row1 = $sql1->fetch(PDO::FETCH_ASSOC);
-        $cid = $row1['cid'];
-    
+        $userid = $dataJson->userid;
+
         $sql2 = $this->db->prepare("
         SELECT tb_cart.*, pname , img , (tb_cart.price*tb_cart.qty) as total FROM tb_cart
         LEFT JOIN tb_products on tb_cart.pid = tb_products.pid
-        LEFT JOIN tb_products_pic on tb_products.pid = tb_products_pic.pid where cid = '$cid'
+        LEFT JOIN tb_products_pic on tb_products.pid = tb_products_pic.pid where userid = '$userid'
         ");
+        
         $sql2->execute(array());
         $data = $sql2->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($data, JSON_PRETTY_PRINT);
@@ -39,17 +33,10 @@ class Cart_model extends Model
         $qty = $dataJson->qty;
         $price = $dataJson->price;
         $pid = $dataJson->pid;
-        $username = $dataJson->username;
-
-        $sql_cid = $this->db->prepare("
-            SELECT cid FROM tb_customers WHERE username = '$username'
-        ");
-        $sql_cid->execute(array());
-        $row_cid = $sql_cid->fetch(PDO::FETCH_ASSOC);
-        $cid = $row_cid['cid'];
+        $userid = $dataJson->userid;
     
         $sql_cart_qty = $this->db->prepare("
-            SELECT qty FROM tb_cart WHERE cid = '$cid' AND pid = '$pid'
+            SELECT qty FROM tb_cart WHERE userid = '$userid' AND pid = '$pid'
         ");
         $sql_cart_qty->execute(array());
         $row_cart_qty = $sql_cart_qty->fetch(PDO::FETCH_ASSOC);
@@ -73,12 +60,12 @@ class Cart_model extends Model
     
         if ($current_cart_qty > 0) {
             $sql_update = $this->db->prepare("
-                UPDATE tb_cart SET qty = qty + '$qty' WHERE cid = '$cid' AND pid = '$pid'
+                UPDATE tb_cart SET qty = qty + '$qty' WHERE userid = '$userid' AND pid = '$pid'
             ");
             $sql_update->execute(array());
         } else {
             $sql_insert = $this->db->prepare("
-                INSERT INTO tb_cart (cid, qty, pid, price) VALUES ('$cid', '$qty', '$pid', '$price')
+                INSERT INTO tb_cart (userid, qty, pid, price) VALUES ('$userid', '$qty', '$pid', '$price')
             ");
             $sql_insert->execute(array());
         }
@@ -95,17 +82,10 @@ class Cart_model extends Model
         $qty = $dataJson->qty;
         $price = $dataJson->price;
         $pid = $dataJson->pid;
-        // username
-        $username = $dataJson->username;
-        $sql = $this->db->prepare("
-        SELECT cid FROM tb_customers WHERE username = '$username'
-        ");
-        $sql->execute(array());
-        $row1 = $sql->fetch(PDO::FETCH_ASSOC);
-        $cid = $row1['cid'];
+        $userid = $dataJson->userid;
 
         $sql_del = $this->db->prepare("
-        DELETE FROM tb_cart WHERE cid = '$cid' AND pid = '$pid' AND price = '$price' AND qty = '$qty'
+        DELETE FROM tb_cart WHERE userid = '$userid' AND pid = '$pid' AND price = '$price' AND qty = '$qty'
         ");
         $sql_del->execute(array());        
     
@@ -147,19 +127,11 @@ class Cart_model extends Model
         $dataJson = json_decode($json);
         $pid = $dataJson->pid;
         $qty = $dataJson->qty;
-        $username = $dataJson->username;
-        
-        // Get customer id (cid) from username
-        $sql_cid = $this->db->prepare("
-            SELECT cid FROM tb_customers WHERE username = '$username'
-        ");
-        $sql_cid->execute(array());
-        $row_cid = $sql_cid->fetch(PDO::FETCH_ASSOC);
-        $cid = $row_cid['cid'];
-        
+        $userid = $dataJson->userid;
+    
         // Get current quantity in cart
         $sql_cart_qty = $this->db->prepare("
-            SELECT qty FROM tb_cart WHERE cid = '$cid' AND pid = '$pid'
+            SELECT qty FROM tb_cart WHERE userid = '$userid' AND pid = '$pid'
         ");
         $sql_cart_qty->execute(array());
         $row_cart_qty = $sql_cart_qty->fetch(PDO::FETCH_ASSOC);
@@ -186,7 +158,7 @@ class Cart_model extends Model
         $sql_update = $this->db->prepare("
             UPDATE tb_cart 
             SET qty = qty + 1 
-            WHERE cid = '$cid' AND pid = '$pid'
+            WHERE userid = '$userid' AND pid = '$pid'
         ");
         $sql_update->execute(array());
         
@@ -203,19 +175,11 @@ class Cart_model extends Model
         $dataJson = json_decode($json);
         $pid = $dataJson->pid;
         $qty = $dataJson->qty;
-        // username
-        $username = $dataJson->username;
-        $sql = $this->db->prepare("
-            SELECT cid FROM tb_customers WHERE username = '$username'
-        ");
-        $sql->execute(array());
-        $row1 = $sql->fetch(PDO::FETCH_ASSOC);
-        $cid = $row1['cid'];
-   
+        $userid = $dataJson->userid;
         $sql_update = $this->db->prepare("
             UPDATE tb_cart 
             SET qty = qty - 1 
-            WHERE cid = '$cid' AND pid = '$pid'
+            WHERE userid = '$userid' AND pid = '$pid'
         ");
         $sql_update->execute(array());   
     
@@ -224,23 +188,15 @@ class Cart_model extends Model
         http_response_code(200);
     }
     
-    
 
     function Cartsum()
     {
         $json = file_get_contents("php://input");
         $dataJson = json_decode($json);
-        $username = $dataJson->username;
-    
-        $sql1 = $this->db->prepare("
-        SELECT cid FROM tb_customers WHERE username = '$username'
-        ");
-        $sql1->execute(array());
-        $row1 = $sql1->fetch(PDO::FETCH_ASSOC);
-        $cid = $row1['cid'];
-    
+        $userid = $dataJson->userid;
+
         $sql2 = $this->db->prepare("
-        SELECT COUNT(pid) AS Sum FROM tb_cart WHERE cid = '$cid'
+        SELECT COUNT(pid) AS Sum FROM tb_cart WHERE userid = '$userid'
         ");
         $sql2->execute(array());
         $row2 = $sql2->fetch(PDO::FETCH_ASSOC);

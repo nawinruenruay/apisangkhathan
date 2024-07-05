@@ -12,7 +12,7 @@ class Order_model extends Model
     {
         $sql = $this->db->prepare("
         SELECT tb_orders_detail.*, cname from tb_orders_detail 
-        LEFT JOIN tb_customers on tb_orders_detail.cid = tb_customers.cid order by order_id desc
+        LEFT JOIN tb_users on tb_orders_detail.userid = tb_users.userid order by order_id desc
         ");
         $sql->execute(array());
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);

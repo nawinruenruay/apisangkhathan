@@ -81,7 +81,6 @@ class Auth_Model extends Model{
         http_response_code(200);
     }
 
-
     function verifyToken(){
         $json = file_get_contents('php://input');
         $dataArray = json_decode($json);

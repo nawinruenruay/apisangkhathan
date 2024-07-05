@@ -30,7 +30,7 @@
             "iat" => time(),
             "exp" => time()+(60*60*24),
             "userId" => $userId,
-            "typeuser" => "user"
+            "typeuser" => "User"
         );
 
         $jwt = Firebase\JWT\JWT::encode($token, $key);
