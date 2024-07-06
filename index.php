@@ -21,6 +21,7 @@
         // require 'libs/DefineVar.php';
 
         require 'libs/CheckToken.php';
+        require 'libs/Uuid.php';
         // require 'libs/CheckCitizent.php';
         
         require 'config/paths.php';

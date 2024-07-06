@@ -1,10 +1,10 @@
 <?php
-    function GenarateTokenSecret($username){
+    function GenarateTokenSecret($userid){
         $key = "Api";
         $token = array(
             "iat" => time(),
             "exp" => time()+(60*60*24*365),
-            "userid" => $username
+            "userid" => $userid
         );
         $jwt = Firebase\JWT\JWT::encode($token, $key);
         return $jwt;

@@ -28,10 +28,13 @@ class Auth_Model extends Model{
             
         }else if(count($data)!= '0'){
             $userid = $data[0]['userid'];
-            $token = GenarateToken($userid);
+            $uuid = GenarateUuid();
+            $auth = GenarateToken($userid);
+            // $token = GenarateTokenSecret($userid);
             $arr = array(
                 'data'=>$data,
-                'token'=>$token,
+                'auth'=>$auth,
+                'uuid'=>$uuid,
                 'message'=>"success",
                 'status'=>200
             );
@@ -84,8 +87,8 @@ class Auth_Model extends Model{
     function verifyToken(){
         $json = file_get_contents('php://input');
         $dataArray = json_decode($json);
-        $token = $dataArray->token;
-        $result = CheckToken($token);
+        $auth = $dataArray->auth;
+        $result = CheckToken($auth);
         if ($result) {
             $response = array(
                 'status' => 200,
