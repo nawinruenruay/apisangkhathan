@@ -23,8 +23,8 @@ class User_Model extends Model
         http_response_code(200);
     }
 
-    
 
+    // เพิ่ม อีเมล , หมายเลขโทรศัพท์ , วัน/เดือน/ปี เกิด
     function Addemail() 
     {
         $json = file_get_contents("php://input");
@@ -81,6 +81,8 @@ class User_Model extends Model
         echo json_encode($data, JSON_PRETTY_PRINT);
         http_response_code(200);
     }
+
+    // แก้ไข อีเมล , หมายเลขโทรศัพท์ , วัน/เดือน/ปี เกิด
     
    
 }
