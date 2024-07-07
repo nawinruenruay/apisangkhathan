@@ -11,8 +11,8 @@ class Order_model extends Model
     function ShowOrder()
     {
         $sql = $this->db->prepare("
-        SELECT tb_orders_detail.*, cname from tb_orders_detail 
-        LEFT JOIN tb_users on tb_orders_detail.userid = tb_users.userid order by order_id desc
+        SELECT tb_orders_detail.*, name from tb_orders_detail 
+        LEFT JOIN tb_users_detail on tb_orders_detail.userid = tb_users_detail.userid order by order_id desc
         ");
         $sql->execute(array());
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);

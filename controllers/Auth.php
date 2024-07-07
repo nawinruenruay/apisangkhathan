@@ -4,9 +4,9 @@
 	    	parent::__construct();
 		}
 			
-	   function Login()
+	   function LoginAdmin()
 	   {
-        $this->model->Login();
+        $this->model->LoginAdmin();
        }
 
 	   function LoginUser()

@@ -4,6 +4,42 @@ class Auth_Model extends Model{
     function __construct(){
             parent::__construct();
     }
+
+    function LoginAdmin(){
+        $json = file_get_contents('php://input');
+        $dataArray = json_decode($json);
+        $username = $dataArray->username;
+        $password = $dataArray->password;
+
+        $sql = $this->db->prepare("
+        SELECT tb_users.*, name from tb_users 
+        LEFT JOIN tb_users_detail on tb_users.userid = tb_users_detail.userid
+        WHERE username = '$username' AND status = '1'
+        ");
+        $sql->execute(array());
+        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        if(count($data) == 0 || !password_verify($password, $data[0]['password'])){
+            $arr = array(
+                'data'=>"",
+                'message'=>"error",
+                'status'=>200
+            );
+        }else if(count($data)!= '0'){
+            $userid = $data[0]['userid'];
+            $uuid = GenarateUuid();
+            $auth = GenarateToken($userid);
+            // $token = GenarateTokenSecret($userid);
+            $arr = array(
+                'data'=>$data,
+                'auth'=>$auth,
+                'uuid'=>$uuid,
+                'message'=>"success",
+                'status'=>200
+            );
+        }
+        echo json_encode($arr, JSON_PRETTY_PRINT);
+    }
     
     function LoginUser(){
         $json = file_get_contents('php://input');
