@@ -14,6 +14,7 @@
 
     	require 'libs/Database.php';
     	require 'libs/Session.php';
+        require 'libs/ResponeCode.php';
 
         // require 'public/PHPExcel.php';
         // require 'public/PHPWord.php';

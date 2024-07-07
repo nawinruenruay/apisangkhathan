@@ -1,9 +1,7 @@
 <?php
 class Signature{
 
-
 	
-
 	public function GenarateSignature(){
 		function randomString($length = 5) {
 			$str = "";
@@ -33,7 +31,6 @@ class Signature{
 		);
 		return $a;
 	}
-
 	
 }
 	
