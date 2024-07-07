@@ -66,7 +66,7 @@ class Auth_Model extends Model{
 
         // tb_users_detail
         $sql_insert_tb_users_detail = $this->db->prepare("
-        INSERT INTO tb_users_detail(userid,name,tel,email,sex,birthday,img) 
+        INSERT INTO tb_users_detail(userid,name,phone,email,sex,birthday,img) 
         VALUES('$userid','$name','','','','','')
         ");
         $sql_insert_tb_users_detail->execute(array());
