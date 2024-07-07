@@ -22,5 +22,65 @@ class User_Model extends Model
         echo json_encode($data, JSON_PRETTY_PRINT);
         http_response_code(200);
     }
+
+    
+
+    function Addemail() 
+    {
+        $json = file_get_contents("php://input");
+        $dataJson = json_decode($json);
+        $userid = $dataJson->userid;
+        $email = $dataJson->email;
+
+        $sql_update = $this->db->prepare("
+            UPDATE tb_users_detail 
+            SET email = '$email'
+            WHERE userid = '$userid'
+        ");
+        $sql_update->execute(array());   
+    
+        $data = 200;
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+
+    function Addphone() 
+    {
+        $json = file_get_contents("php://input");
+        $dataJson = json_decode($json);
+        $userid = $dataJson->userid;
+        $phone = $dataJson->phone;
+
+        $sql_update = $this->db->prepare("
+            UPDATE tb_users_detail 
+            SET phone = '$phone'
+            WHERE userid = '$userid'
+        ");
+        $sql_update->execute(array());   
+    
+        $data = 200;
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+
+    function Addbirthday() 
+    {
+        $json = file_get_contents("php://input");
+        $dataJson = json_decode($json);
+        $userid = $dataJson->userid;
+        $birthday = $dataJson->birthday;
+
+        $sql_update = $this->db->prepare("
+            UPDATE tb_users_detail 
+            SET birthday = '$birthday'
+            WHERE userid = '$userid'
+        ");
+        $sql_update->execute(array());   
+    
+        $data = 200;
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+    
    
 }

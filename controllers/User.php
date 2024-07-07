@@ -8,5 +8,19 @@
             $this->model->ShowUser();
         }
 
+
+
+        function Addemail(){
+            $this->model->Addemail();
+        }
+
+        function Addphone(){
+            $this->model->Addphone();
+        }
+
+        function Addbirthday(){
+            $this->model->Addbirthday();
+        }
+
     }
 ?>
