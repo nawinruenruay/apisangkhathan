@@ -60,6 +60,78 @@ class User_Model extends Model
         http_response_code(200);
     }
 
+    function Update_name_sex() 
+    {
+        $json = file_get_contents("php://input");
+        $dataJson = json_decode($json);
+        $userid = $dataJson->userid;
+        $name = $dataJson->name;
+        $sex = $dataJson->sex;
+       
+        $sql_update = $this->db->prepare("
+            UPDATE tb_users_detail 
+            SET name = '$name' , sex = '$sex'
+            WHERE userid = '$userid'
+        ");
+        $sql_update->execute(array());   
+          
+        $data = 200;
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+
+    function UploadIMG()
+    {
+        $data = json_decode(file_get_contents("php://input"));
+        $userid = $_REQUEST['userid'];
+        $typedocument = $_REQUEST['typeimg'];
+        $file_name = $_FILES['file']['name'];
+        $file_size = $_FILES['file']['size']; 
+        $file_tmp = $_FILES['file']['tmp_name'];
+        $file_type = $_FILES['file']['type'];
+        $filename = "public/uploadimg/userimg/";
+        $filename_userid = "public/uploadimg/userimg/";
+        $arr = array([
+            "message" => "success",
+            "data" => ''
+        ]);
+        if (!file_exists($filename)) {
+            mkdir("public/uploadimg/userimg/", 0777);
+        }
+        if (!file_exists($filename_userid)) {
+            mkdir("public/uploadimg/userimg/", 0777);
+        }
+        
+        if ($typedocument === 'update') {
+            if ($file_type === "image/png" || $file_type === "image/jpg" || $file_type === "image/jpeg") {
+                $files_upload = basename($_FILES["file"]["name"]);
+                $imageFileType = strtolower(pathinfo($files_upload, PATHINFO_EXTENSION));
+                $delete = $filename_userid . "$userid." . $imageFileType;
+                if (file_exists($delete)) {
+                    unlink($delete);
+                }
+                if (move_uploaded_file($_FILES["file"]["tmp_name"], $filename_userid . "$userid." . $imageFileType)) {
+                    $path = $filename_userid . "$userid." . $imageFileType;
+                    $sqlUpdate = $this->db->prepare("
+                    UPDATE tb_users_detail SET img = '$path' WHERE userid = '$userid'
+                    ");
+                    $sqlUpdate->execute(array());
+                    echo json_encode($arr, JSON_PRETTY_PRINT);
+                    $arr = array([
+                        "message" => "success",
+                        "data" => $filename_userid . "$userid." . $imageFileType
+                    ]);
+                }
+            } else {
+                $arr = array([
+                    "message" => "error",
+                    "data" => $file_type
+                ]);
+                echo json_encode($arr, JSON_PRETTY_PRINT);
+            }
+        }
+    }
+
 
    
 }

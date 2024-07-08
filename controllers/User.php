@@ -12,5 +12,13 @@
             $this->model->Addemail_phone_birthday();
         }
 
+        function Update_name_sex(){
+            $this->model->Update_name_sex();
+        }
+
+        function UploadIMG(){
+            $this->model->UploadIMG();
+        }
+
     }
 ?>
