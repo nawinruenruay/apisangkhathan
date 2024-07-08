@@ -7,19 +7,9 @@
         function ShowUser(){
             $this->model->ShowUser();
         }
-
-
-
-        function Addemail(){
-            $this->model->Addemail();
-        }
-
-        function Addphone(){
-            $this->model->Addphone();
-        }
-
-        function Addbirthday(){
-            $this->model->Addbirthday();
+        
+        function Addemail_phone_birthday(){
+            $this->model->Addemail_phone_birthday();
         }
 
     }
