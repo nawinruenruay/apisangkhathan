@@ -27,9 +27,8 @@ class User_Model extends Model
     {
         $json = file_get_contents("php://input");
         $dataJson = json_decode($json);
-        $typeadd = $dataJson->typeadd;
         $userid = $dataJson->userid;
-
+        $typeadd = $dataJson->typeadd;
         if ($typeadd === 'email') {
             $email = $dataJson->email;
             $sql_update = $this->db->prepare("
@@ -56,7 +55,6 @@ class User_Model extends Model
             $sql_update->execute(array());   
         
         }
-
         $data = 200;
         echo json_encode($data, JSON_PRETTY_PRINT);
         http_response_code(200);
