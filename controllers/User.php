@@ -8,12 +8,8 @@
             $this->model->ShowUser();
         }
         
-        function Addemail_phone_birthday(){
-            $this->model->Addemail_phone_birthday();
-        }
-
-        function Update_name_sex(){
-            $this->model->Update_name_sex();
+        function Updatedata(){
+            $this->model->Updatedata();
         }
 
         function UploadIMG(){

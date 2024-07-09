@@ -23,7 +23,7 @@ class User_Model extends Model
         http_response_code(200);
     }
 
-    function Addemail_phone_birthday() 
+    function Updatedata() 
     {
         $json = file_get_contents("php://input");
         $dataJson = json_decode($json);
@@ -53,28 +53,17 @@ class User_Model extends Model
                 WHERE userid = '$userid'
             ");
             $sql_update->execute(array());   
-        
-        }
-        $data = 200;
-        echo json_encode($data, JSON_PRETTY_PRINT);
-        http_response_code(200);
-    }
-
-    function Update_name_sex() 
-    {
-        $json = file_get_contents("php://input");
-        $dataJson = json_decode($json);
-        $userid = $dataJson->userid;
-        $name = $dataJson->name;
-        $sex = $dataJson->sex;
-       
-        $sql_update = $this->db->prepare("
+        } else if ($typeadd === 'name_sex') {
+            $name = $dataJson->name;
+            $sex = $dataJson->sex;
+            $sql_update = $this->db->prepare("
             UPDATE tb_users_detail 
             SET name = '$name' , sex = '$sex'
             WHERE userid = '$userid'
-        ");
-        $sql_update->execute(array());   
-          
+            ");
+            $sql_update->execute(array());   
+        }
+
         $data = 200;
         echo json_encode($data, JSON_PRETTY_PRINT);
         http_response_code(200);
