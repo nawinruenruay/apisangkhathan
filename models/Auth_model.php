@@ -109,8 +109,8 @@ class Auth_Model extends Model{
 
         // tb_users_address
         $sql_insert_tb_users_address = $this->db->prepare("
-        INSERT INTO tb_users_address(userid,address1,address2) 
-        VALUES('$userid','','')
+        INSERT INTO tb_users_address(userid,address,ad_name,ad_phone,ad_province,ad_amphure,ad_tambon,zip_code)  
+        VALUES('$userid','','','','','','','')
         ");
         $sql_insert_tb_users_address->execute(array());
 
