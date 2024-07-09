@@ -11,12 +11,6 @@ class User_Model extends Model
         $json = file_get_contents("php://input");
         $dataArray = json_decode($json);
         $userid = $dataArray->userid;
-        // $sql = $this->db->prepare("
-        // SELECT tb_users.*, name , phone , email , sex , birthday , img FROM tb_users 
-        // LEFT JOIN tb_users_detail on tb_users.userid = tb_users_detail.userid
-        // LEFT JOIN tb_users_address on tb_users.userid = tb_users_address.userid
-        // WHERE tb_users.userid = '$userid'
-        // ");
         $sql = $this->db->prepare("
         SELECT 
         tb_users_detail.name, tb_users_detail.phone, tb_users_detail.email, tb_users_detail.sex, tb_users_detail.birthday, tb_users_detail.img, 
