@@ -13,12 +13,16 @@ class User_Model extends Model
         $userid = $dataArray->userid;
         $sql = $this->db->prepare("
         SELECT 
-        tb_users_detail.name, tb_users_detail.phone, tb_users_detail.email, tb_users_detail.sex, tb_users_detail.birthday, tb_users_detail.img, 
-        tb_users_address.address, tb_users_address.ad_name, tb_users_address.ad_phone, tb_users_address.ad_province, tb_users_address.ad_district,  tb_users_address.ad_subdistrict, tb_users_address.zip_code
-        FROM tb_users 
-        LEFT JOIN tb_users_detail on tb_users.userid = tb_users_detail.userid
-        LEFT JOIN tb_users_address on tb_users.userid = tb_users_address.userid
-        WHERE tb_users.userid = '$userid';
+            tb_users_detail.name, tb_users_detail.phone, tb_users_detail.email, tb_users_detail.sex, tb_users_detail.birthday, tb_users_detail.img, 
+            tb_users_address.address, tb_users_address.ad_name, tb_users_address.ad_phone, tb_users_address.ad_province, tb_users_address.ad_district,  tb_users_address.ad_subdistrict, tb_users_address.zip_code
+        FROM 
+            tb_users 
+        LEFT JOIN 
+            tb_users_detail on tb_users.userid = tb_users_detail.userid
+        LEFT JOIN 
+            tb_users_address on tb_users.userid = tb_users_address.userid
+        WHERE 
+            tb_users.userid = '$userid';
         ");
         $sql->execute(array());
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
