@@ -7,6 +7,14 @@
         function ShowUser(){
             $this->model->ShowUser();
         }
+
+        function Showorderbuy(){
+            $this->model->Showorderbuy();
+        }
+
+        function Showorderbuydetail(){
+            $this->model->Showorderbuydetail();
+        }
         
         function Updatedata(){
             $this->model->Updatedata();

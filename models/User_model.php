@@ -29,6 +29,41 @@ class User_Model extends Model
         http_response_code(200);
     }
 
+
+    function Showorderbuy()
+    {
+        $json = file_get_contents("php://input");
+        $dataArray = json_decode($json);
+        $userid = $dataArray->userid;
+        $sql = $this->db->prepare("
+        SELECT tb_orders_detail.*, name from tb_orders_detail 
+        LEFT JOIN tb_users_detail on tb_orders_detail.userid = tb_users_detail.userid WHERE tb_users_detail.userid = '$userid'  order by order_id desc
+        ");
+        $sql->execute(array());
+        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+
+    function Showorderbuydetail()
+    {
+        $json = file_get_contents("php://input");
+        $dataArray = json_decode($json);
+        $userid = $dataArray->userid;
+        $order_id = $dataArray->order_id;
+        $sql = $this->db->prepare("
+        SELECT tb_orders.*, tb_products.pname, tb_orders.price, tb_products_pic.img, tb_orders.qty , (tb_orders.price*tb_orders.qty) as total from tb_orders
+        LEFT JOIN tb_products on tb_orders.pid = tb_products.pid 
+        LEFT JOIN tb_orders_detail on tb_orders.order_id = tb_orders_detail.order_id 
+        LEFT JOIN tb_products_pic on tb_products.pid = tb_products_pic.pid 
+        where tb_orders.order_id = '$order_id' AND tb_orders_detail.userid = '$userid'
+        ");
+        $sql->execute(array());
+        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+
     function Updatedata() 
     {
         $json = file_get_contents("php://input");

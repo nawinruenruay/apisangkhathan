@@ -27,25 +27,30 @@ class Buy_model extends Model
         $sql_x->execute(array());
         $row_x = $sql_x->fetchAll(PDO::FETCH_ASSOC);
 
+        if (empty($row_x)) {
+            $data = 400;
+            echo json_encode($data, JSON_PRETTY_PRINT);
+            return;
+        }
+
+        $order_date = date("Y-m-d");
+        $status = '1';
+        $sql_insert_tb_orders_detail = $this->db->prepare("
+        INSERT into tb_orders_detail(order_id, userid, order_date, status, pay_date, pay_time, pay_total, pay_slip)
+        values('$order_id', '$userid', '$order_date', '$status', '', '00:00', '', '')
+        ");
+        $sql_insert_tb_orders_detail->execute(array());
+
         foreach ($row_x as $row) {
             $pid = $row['pid'];
             $price =  $row['price'];
             $qty =  $row['qty'];
-
             if ($qty > 0 ) {
                 $sql_insert_tb_orders = $this->db->prepare("
                 INSERT INTO tb_orders(order_id,pid,qty,price) Value('$order_id', '$pid', '$qty', '$price')
                 ");
                 $sql_insert_tb_orders->execute(array());
 
-                $order_date = date("Y-m-d");
-                $status = '1';
-                $sql_insert_tb_orders_detail = $this->db->prepare("
-                INSERT into tb_orders_detail(order_id, userid, order_date, status, pay_date, pay_time, pay_total, pay_slip)
-                values('$order_id', '$userid', '$order_date', '$status', '', '00:00', '', '')
-                ");
-                $sql_insert_tb_orders_detail->execute(array());
-    
                 $sql_delete_cart = $this->db->prepare("
                 DELETE from tb_cart where userid='$userid' and pid='$pid' and qty='$qty' and price='$price'
                 ");
