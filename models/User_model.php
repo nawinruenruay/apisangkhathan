@@ -11,12 +11,6 @@ class User_Model extends Model
         $json = file_get_contents("php://input");
         $dataArray = json_decode($json);
         $userid = $dataArray->userid;
-        // $sql = $this->db->prepare("
-        // SELECT tb_users.*, name , phone , email , sex , birthday , img FROM tb_users 
-        // LEFT JOIN tb_users_detail on tb_users.userid = tb_users_detail.userid
-        // LEFT JOIN tb_users_address on tb_users.userid = tb_users_address.userid
-        // WHERE tb_users.userid = '$userid'
-        // ");
         $sql = $this->db->prepare("
         SELECT 
             tb_users_detail.name, tb_users_detail.phone, tb_users_detail.email, tb_users_detail.sex, tb_users_detail.birthday, tb_users_detail.img, 
@@ -71,6 +65,20 @@ class User_Model extends Model
             $sql_update = $this->db->prepare("
             UPDATE tb_users_detail 
             SET name = '$name' , sex = '$sex'
+            WHERE userid = '$userid'
+            ");
+            $sql_update->execute(array());   
+        } else if ($typeadd === 'address') {
+            $address = $dataJson->address;
+            $ad_name = $dataJson->ad_name;
+            $ad_phone = $dataJson->ad_phone;
+            $ad_province = $dataJson->ad_province;
+            $ad_amphure = $dataJson->ad_amphure;
+            $ad_tambon = $dataJson->ad_tambon;
+            $zip_code = $dataJson->zip_code;
+            $sql_update = $this->db->prepare("
+            UPDATE tb_users_address 
+            SET address = '$address' , ad_name = '$ad_name', ad_phone = '$ad_phone', ad_province = '$ad_province', ad_amphure = '$ad_amphure', ad_tambon = '$ad_tambon', zip_code = '$zip_code'
             WHERE userid = '$userid'
             ");
             $sql_update->execute(array());   
