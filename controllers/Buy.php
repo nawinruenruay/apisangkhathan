@@ -8,6 +8,12 @@
 			$this->model->Buyproduct();
 		}
 
+		function CancelOrder(){
+			$this->model->CancelOrder();
+		}
+
+
+
 
 		
 

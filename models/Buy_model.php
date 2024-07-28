@@ -66,5 +66,25 @@ class Buy_model extends Model
         http_response_code(200);
         
     }
+
+    function CancelOrder() 
+    {
+        $json = file_get_contents("php://input");
+        $dataJson = json_decode($json);
+        $order_id = $dataJson->order_id;
+
+        $sql_update = $this->db->prepare("
+        UPDATE tb_orders_detail 
+        SET status = '5' 
+        WHERE order_id = '$order_id'
+        ");
+        $sql_update->execute(array());   
+        
+
+        $data = 200;
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+        
+    }
     
 }
