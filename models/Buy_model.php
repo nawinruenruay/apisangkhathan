@@ -83,7 +83,6 @@ class Buy_model extends Model
             ");
             $sql_update->execute(array());   
         } 
-
         $data = 200;
         echo json_encode($data, JSON_PRETTY_PRINT);
         http_response_code(200);
