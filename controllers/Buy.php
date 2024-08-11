@@ -8,6 +8,14 @@
 			$this->model->Buyproduct();
 		}
 
+		function Checkout(){
+			$this->model->Checkout();
+		}
+
+		function UploadIMG(){
+			$this->model->UploadIMG();
+		}
+
 		function CancelOrder(){
 			$this->model->CancelOrder();
 		}

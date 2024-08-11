@@ -66,18 +66,42 @@ class Buy_model extends Model
         http_response_code(200);
     }
 
+    function Checkout() 
+    {
+        $json = file_get_contents("php://input");
+        $dataJson = json_decode($json);
+        $order_id = $dataJson->order_id;
+        $pay_date = $dataJson->pay_date;
+        $pay_time = $dataJson->pay_time;
+        $pay_total = $dataJson->pay_total;
+        $typeadd = $dataJson->typeadd;
+        if ($typeadd === 'checkout') {
+            $email = $dataJson->email;
+            $sql_update = $this->db->prepare("
+                UPDATE tb_orders_detail 
+                SET pay_date = '$pay_date' , pay_time = '$pay_time' ,  pay_total = '$pay_total'
+                WHERE order_id = '$order_id'
+            ");
+            $sql_update->execute(array());   
+        } 
+
+        $data = 200;
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        http_response_code(200);
+    }
+
 
     function UploadIMG()
     {
         $data = json_decode(file_get_contents("php://input"));
-        $userid = $_REQUEST['userid'];
+        $order_id = $_REQUEST['order_id'];
         $typedocument = $_REQUEST['typeimg'];
         $file_name = $_FILES['file']['name'];
         $file_size = $_FILES['file']['size']; 
         $file_tmp = $_FILES['file']['tmp_name'];
         $file_type = $_FILES['file']['type'];
         $filename = "public/uploadimg/slip/";
-        $filename_userid = "public/uploadimg/slip/";
+        $filename_slip = "public/uploadimg/slip/";
         $arr = array([
             "message" => "success",
             "data" => ''
@@ -85,7 +109,7 @@ class Buy_model extends Model
         if (!file_exists($filename)) {
             mkdir("public/uploadimg/slip/", 0777);
         }
-        if (!file_exists($filename_userid)) {
+        if (!file_exists($filename_slip)) {
             mkdir("public/uploadimg/slip/", 0777);
         }
         
@@ -93,20 +117,20 @@ class Buy_model extends Model
             if ($file_type === "image/png" || $file_type === "image/jpg" || $file_type === "image/jpeg") {
                 $files_upload = basename($_FILES["file"]["name"]);
                 $imageFileType = strtolower(pathinfo($files_upload, PATHINFO_EXTENSION));
-                $delete = $filename_userid . "$userid." . $imageFileType;
+                $delete = $filename_slip . "$order_id." . $imageFileType;
                 if (file_exists($delete)) {
                     unlink($delete);
                 }
-                if (move_uploaded_file($_FILES["file"]["tmp_name"], $filename_userid . "$userid." . $imageFileType)) {
-                    $path = $filename_userid . "$userid." . $imageFileType;
+                if (move_uploaded_file($_FILES["file"]["tmp_name"], $filename_slip . "$order_id." . $imageFileType)) {
+                    $path = $filename_slip . "$order_id." . $imageFileType;
                     $sqlUpdate = $this->db->prepare("
-                    UPDATE tb_users_detail SET img = '$path' WHERE userid = '$userid'
+                    UPDATE tb_orders_detail SET pay_slip = '$path' WHERE order_id = '$order_id'
                     ");
                     $sqlUpdate->execute(array());
                     echo json_encode($arr, JSON_PRETTY_PRINT);
                     $arr = array([
                         "message" => "success",
-                        "data" => $filename_userid . "$userid." . $imageFileType
+                        "data" => $filename_slip . "$order_id." . $imageFileType
                     ]);
                 }
             } else {
