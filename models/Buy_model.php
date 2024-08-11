@@ -78,7 +78,7 @@ class Buy_model extends Model
             $pay_total = $dataJson->pay_total;
             $sql_update = $this->db->prepare("
                 UPDATE tb_orders_detail 
-                SET pay_date = '$pay_date' , pay_time = '$pay_time' ,  pay_total = '$pay_total'
+                SET status = '2' , pay_date = '$pay_date' , pay_time = '$pay_time' ,  pay_total = '$pay_total'
                 WHERE order_id = '$order_id'
             ");
             $sql_update->execute(array());   
