@@ -71,12 +71,11 @@ class Buy_model extends Model
         $json = file_get_contents("php://input");
         $dataJson = json_decode($json);
         $order_id = $dataJson->order_id;
-        $pay_date = $dataJson->pay_date;
-        $pay_time = $dataJson->pay_time;
-        $pay_total = $dataJson->pay_total;
         $typeadd = $dataJson->typeadd;
         if ($typeadd === 'checkout') {
-            $email = $dataJson->email;
+            $pay_date = $dataJson->pay_date;
+            $pay_time = $dataJson->pay_time;
+            $pay_total = $dataJson->pay_total;
             $sql_update = $this->db->prepare("
                 UPDATE tb_orders_detail 
                 SET pay_date = '$pay_date' , pay_time = '$pay_time' ,  pay_total = '$pay_total'
