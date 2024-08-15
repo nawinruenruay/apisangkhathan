@@ -129,7 +129,6 @@ class Cart_model extends Model
         $qty = $dataJson->qty;
         $userid = $dataJson->userid;
     
-        // Get current quantity in cart
         $sql_cart_qty = $this->db->prepare("
             SELECT qty FROM tb_cart WHERE userid = '$userid' AND pid = '$pid'
         ");
@@ -137,7 +136,6 @@ class Cart_model extends Model
         $row_cart_qty = $sql_cart_qty->fetch(PDO::FETCH_ASSOC);
         $current_qty = $row_cart_qty['qty'];
         
-        // Get product quantity in tb_products
         $sql_product_qty = $this->db->prepare("
             SELECT qty FROM tb_products WHERE pid = '$pid'
         ");
